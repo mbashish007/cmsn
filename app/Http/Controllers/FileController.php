@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\File;
+use App\Http\Requests\CreateFileRequest;
+use App\Http\Requests\RenameFileRequest;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -33,9 +35,18 @@ class FileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateFileRequest $request)
     {
-        //
+        // dd($request->repo);
+        $path = $request->file->store('files');
+        File::create([
+            'name' => $request->file('file')->getClientOriginalName(),
+            'file' => $path,
+            'repo_id' => $request->repo,
+        ]);
+
+        return redirect()->back();
+
     }
 
     /**
@@ -67,9 +78,12 @@ class FileController extends Controller
      * @param  \App\File  $file
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, File $file)
+    public function update(RenameFileRequest $request, File $file)
     {
-        //
+        $this->authorize('update', $file);
+        // dd($request->only('name'));// outputs vectored array
+        $file->update($request->only('name'));
+        return redirect()->back();
     }
 
     /**
@@ -80,6 +94,13 @@ class FileController extends Controller
      */
     public function destroy(File $file)
     {
-        //
+        $this->authorize('delete', $file);
+
+        $file->deleteFile();
+        $file->delete();
+        session()->flash('success','Post Trashed Successfully');
+        return redirect()->back();
+
+
     }
 }

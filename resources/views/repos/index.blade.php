@@ -12,7 +12,7 @@
                     <ul class="list-group">
                         @foreach ($repos as $repo)
                             <li class="list-group-item">
-                               <p>{{$repo->name}}</p> 
+                               <a href={{route('repos.show',$repo->slug)}}>{{$repo->name}}</a> 
                             </li>
                         @endforeach
                     </ul>

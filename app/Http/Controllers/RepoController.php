@@ -56,7 +56,7 @@ class RepoController extends Controller
      */
     public function show(Repo $repo)
     {
-        //
+        return view('repos.show',['repo'=>$repo]);
     }
 
     /**
@@ -91,5 +91,9 @@ class RepoController extends Controller
     public function destroy(Repo $repo)
     {
         //
+    }
+
+    public function addFile(){
+        
     }
 }

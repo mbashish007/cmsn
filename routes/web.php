@@ -23,4 +23,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('repos', 'RepoController')->middleware('auth');
 
+Route::get('repos/{repo}/add_file','RepoController@addFile')->middleware('auth')->name('repos.add_file');
 Route::resource('files','FileController');
