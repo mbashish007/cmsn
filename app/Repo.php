@@ -21,5 +21,10 @@ class Repo extends Model
         return $this->hasMany(File::class);
     }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
     
 }
