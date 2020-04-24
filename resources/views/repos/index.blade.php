@@ -13,6 +13,19 @@
                         @foreach ($repos as $repo)
                             <li class="list-group-item">
                                <a href={{route('repos.show',$repo->slug)}}>{{$repo->name}}</a> 
+                               {{-- <ul class="list-group list-group-horizontal-sm " style="height: 20px" >
+                                    @foreach ($repo->tags as $tag)
+                                        <li class="list-group-item">{{$tag->name}} </li>
+                                    @endforeach
+                              </ul> --}}
+                                
+                              <div class="gap-multiline-items-1">
+                                @foreach ($repo->tags->take(9) as $tag)
+                                <span class="badge badge-secondary px-2 py-1 bg-primary">{{$tag->name}} </span>
+                                @endforeach
+                                
+                                
+                              </div>
                             </li>
                         @endforeach
                     </ul>
@@ -27,3 +40,4 @@
     </div>
 </div>
 @endsection
+

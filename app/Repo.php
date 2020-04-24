@@ -26,5 +26,18 @@ class Repo extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+    /**
+     * Check If Repo has Tag.
+     *
+     * 
+     * @return bool
+     */
+
+     
+     
+    public function hasTag($tagid){
+        return in_array($tagid,$this->tags->pluck('id')->toArray());
+    }
+
     
 }

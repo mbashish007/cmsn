@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Repo;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\CreateRepoRequest;
+use App\Http\Requests\UpdateRepoRequest;
 
 class RepoController extends Controller
 {
@@ -28,7 +30,7 @@ class RepoController extends Controller
      */
     public function create()
     {
-        return view('repos.create');   
+        return view('repos.create',['tags' => Tag::all()]);   
     }
 
     /**
@@ -40,10 +42,14 @@ class RepoController extends Controller
     public function store(CreateRepoRequest $request)
     {
         //  dd(Str::of($request->name.' '.auth()->user()->name)->slug('-'));
-        auth()->user()->repos()->create([
+        $repo = auth()->user()->repos()->create([
             'name' => $request->name,
             'slug' => Str::of($request->name.' '.auth()->user()->name)->slug('-')
         ]);
+
+        if($request->tags){
+            $repo->tags()->attach($request->tags);
+        }
 
         return redirect(route('repos.index'));
     }
@@ -67,7 +73,7 @@ class RepoController extends Controller
      */
     public function edit(Repo $repo)
     {
-        //
+        return view('repos.create',['repo' => $repo ,'tags' => Tag::all()]); 
     }
 
     /**
@@ -77,9 +83,22 @@ class RepoController extends Controller
      * @param  \App\Repo  $repo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Repo $repo)
+    public function update(UpdateRepoRequest $request, Repo $repo)
     {
-        //
+        // $names = Repo::all()->except($repo->id)
+        // ->pluck('name')->toArray();
+        // dd($names);
+
+        $repo->update([
+            'name' => $request->name,
+            'slug' => Str::of($request->name.' '.auth()->user()->name)->slug('-'),
+        ]);
+
+        if($request->tags){
+            $repo->tags()->sync($request->tags);
+        }
+
+        return redirect()->route('repos.show',['repo' => $repo]);
     }
 
     /**
@@ -90,7 +109,7 @@ class RepoController extends Controller
      */
     public function destroy(Repo $repo)
     {
-        //
+        
     }
 
     public function addFile(){

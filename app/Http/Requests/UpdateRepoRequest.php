@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Repo;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\UniqueUserRepo;
+use App\Rules\UpdateRepoNameRule;
 
-class CreateRepoRequest extends FormRequest
+
+class UpdateRepoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +26,12 @@ class CreateRepoRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->route('repo'));
+        // $repo =Repo::find($this->route('repo'));
+        $repo = $this->route('repo');
+        // dd($repo);
         return [
-            'name' => ['required', new UniqueUserRepo],
+            'name' => ['required', new UpdateRepoNameRule($repo)],
             'tags' => ['nullable','max:10']
         ];
     }

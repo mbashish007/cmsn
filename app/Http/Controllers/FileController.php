@@ -82,7 +82,8 @@ class FileController extends Controller
     {
         $this->authorize('update', $file);
         // dd($request->only('name'));// outputs vectored array
-        $file->update($request->only('name'));
+        $name = $request->name.'.'.$file->Ext();
+        $file->update(['name' => $name]);
         return redirect()->back();
     }
 

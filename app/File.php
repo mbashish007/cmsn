@@ -20,4 +20,9 @@ class File extends Model
     public function deleteFile() {
         Storage::delete($this->file);
     }
+
+    public function Ext() {
+        $arr = explode('.',$this->file);
+        return end($arr);
+    }
 }

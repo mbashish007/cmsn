@@ -5,7 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{$repo->name}} </div>
+                <div class="card-header"><span class="h4 text-primary">{{$repo->name}}</span> 
+                    <a href="{{route('repos.edit',$repo->slug)}} " class="btn btn-dark btn-sm float-right">Update Repostitry</a>
+                    <div class="gap-multiline-items-1 mt-2">
+                        @foreach ($repo->tags->take(9) as $tag)
+                        <span class="badge badge-secondary px-2 py-1 bg-primary">{{$tag->name}} </span>
+                        @endforeach
+                    </div>
+                </div>
 
                 <div class="card-body">
                     <h2>Files</h2>
