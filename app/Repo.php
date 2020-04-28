@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelLike\Traits\Likeable;
+
 
 
 class Repo extends Model
 {
+    use Likeable;
+    
     protected $guarded = [];
 
     public function getRouteKeyName(){

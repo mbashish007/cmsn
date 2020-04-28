@@ -20,7 +20,9 @@
                         @endisset
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{$repo->name}}" >
+                            <input type="text" class="form-control" id="name" name="name" @isset($repo)
+                                value="{{$repo->name}}"
+                            @endisset >
                             
                         </div>
                         @if ($tags->count() > 0 )
@@ -50,6 +52,7 @@
 
 @section('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    
 @endsection
     
 @section('js')

@@ -20,6 +20,9 @@ class RepoController extends Controller
      */
     public function index()
     {
+        // $user = auth()->user();
+        // $repo = Repo::find(8);
+        // dd($user->toggleLike($repo));
         return view('repos.index',['repos' => Repo::all()]);
     }
 
@@ -30,6 +33,7 @@ class RepoController extends Controller
      */
     public function create()
     {
+        
         return view('repos.create',['tags' => Tag::all()]);   
     }
 
@@ -62,6 +66,8 @@ class RepoController extends Controller
      */
     public function show(Repo $repo)
     {
+        // dd(auth()->user()->hasLiked($repo));
+        // return response()->json(['name' =>'red robin']);
         return view('repos.show',['repo'=>$repo]);
     }
 
@@ -101,6 +107,14 @@ class RepoController extends Controller
         return redirect()->route('repos.show',['repo' => $repo]);
     }
 
+
+    public function likeRepo(Request $request){
+        $repo = Repo::find($request->id);
+        auth()->user()->toggleLike($repo);
+        $response = auth()->user()->hasLiked($repo); 
+        // return response()->json(['or'=>$response]);
+        return response()->json(['liked' => $response]);
+    }
     /**
      * Remove the specified resource from storage.
      *
