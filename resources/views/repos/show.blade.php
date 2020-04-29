@@ -9,16 +9,8 @@
                     <div id="name-like">
                         <span class="h4 text-primary">{{$repo->name}}</span> 
                         <div class="like-btn ml-2">
-                              
-                            <i id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}} "></i> 
+                            <a href="javascript:void(0);" id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}}"></a>
                             <div id="like{{$repo->id}}-bs3" class="" style="display: inline">{{ $repo->likers()->count() }}</div>
-                            {{-- <i onclick="myFunction(this)" class="fa fa-thumbs-up"></i> --}}
-    
-                                {{-- <script>
-                                function myFunction(x) {
-                                x.classList.toggle("fa-thumbs-down");
-                                }
-                            </script> --}}
                         </div>
                     </div>
                     <a href="{{route('repos.edit',$repo->slug)}} " id="update-btn"   class="btn btn-dark btn-sm float-right">Update Repostitry</a>
@@ -85,6 +77,8 @@
                     @endif
                     
                 </div>
+
+                {{-- .card-footer --}}
             </div>
         </div>
     </div>
@@ -92,7 +86,6 @@
 @endsection
 
 @section('css')
-    {{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" /> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 
@@ -132,6 +125,34 @@
         right: 15px;
     }
 
+    .fa {
+        padding: 5px 5px;
+        font-size:18px;
+        width: 30px;
+        text-align: center;
+        text-decoration: none;
+        /* margin: 5px 2px; */
+        background: #777;
+        color:white;
+        border-radius: 50%;
+    }
+
+    .fa:hover {
+        text-decoration: none;
+        background: #eee;
+    }
+
+    .liked {
+        color: blue;
+        background: #eee;
+        text-decoration: none;
+    }
+
+    .liked:hover {
+        color: red;
+    }
+
+
 
 </style>
 @endsection
@@ -164,7 +185,7 @@
                 }
             });
     
-            $('i.fa-thumbs-up').click(function(){    
+            $('.fa-thumbs-up').click(function(){    
                 var id = $(this).data('id');
                 var c = $('#'+this.id+'-bs3').html();
                 var cObjId = this.id;
@@ -175,13 +196,6 @@
                    url:'/repos/like',
                    data:{id:id},
                    success:function(data,status){
-                    //   if(jQuery.isEmptyObject(data.success.attached)){
-                    //     $('#'+cObjId+'-bs3').html(parseInt(c)-1);
-                    //     $(cObj).removeClass("like-post");
-                    //   }else{
-                    //     $('#'+cObjId+'-bs3').html(parseInt(c)+1);
-                    //     $(cObj).addClass("like-post");
-                    //   }
                         if(data.liked){
                             $(cObj).addClass('liked');
                             $('#'+cObjId+'-bs3').html(parseInt(c)+1);
@@ -190,32 +204,14 @@
                             $(cObj).removeClass('liked');
                             $('#'+cObjId+'-bs3').html(parseInt(c)-1);
                         }
-                    // var obj = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
-                    // // var obj = JSON.parse(data);
-                    // var obj = data.name; 
-                    // alert("Data: " + obj + "\nStatus: " + status);
-                   }////
+                    
+                   }
                 });
-
-
-                // $.post("{{route('likeRepo')}}",
-                //     {
-                //         // "csrf-token": "{{ csrf_token() }}",
-                //         name: "Donald Duck",
-                //         city: "Duckburg"
-                //     },
-                //     function(data, status){
-                //         alert("Data: " + data + "\nStatus: " + status);
-                //     });
 
                 
     
             });      
-    
-            $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
-                event.preventDefault();
-                $(this).ekkoLightbox();
-            });                                        
+                                     
         }); 
     </script>
 @endsection

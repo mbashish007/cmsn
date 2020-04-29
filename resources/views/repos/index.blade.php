@@ -13,10 +13,12 @@
                         @foreach ($repos as $repo)
                             <li class="list-group-item">
                                 <div id="repo-name">
+                                   
                                     <a href={{route('repos.show',$repo->slug)}}><span class="repo-lead">{{$repo->name}}</span></a> 
                                     <div class="like-btn ml-2">
-                                        <i id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}} "></i> 
-                                        <div id="like{{$repo->id}}-bs3" class="" style="display: inline">{{ $repo->likers()->count() }}</div>
+                                        {{-- <i id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}} "></i>  --}}
+                                        <a href="javascript:void(0);" id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}}"></a>
+                                        <div id="like{{$repo->id}}-bs3" class="cnt" style="display: inline">{{ $repo->likers()->count() }}</div>
                                         {{-- <i onclick="myFunction(this)" class="fa fa-thumbs-up"></i> --}}
 
                                             {{-- <script>
@@ -33,7 +35,7 @@
                                     @endforeach
                               </ul> --}}
                                 
-                              <div class="gap-multiline-items-1">
+                              <div class="gap-multiline-items-1 mt-2">
                                 @foreach ($repo->tags->take(9) as $tag)
                                 <span class="badge badge-secondary px-2 py-1 bg-primary">{{$tag->name}} </span>
                                 @endforeach
@@ -58,19 +60,23 @@
 @section('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
+    a {
+        text-decoration: none;
+    }
 
+    
     .like-btn {
         margin-top: 1px;
     }
 
-    .fa {
+    /* .fa {
         color: #444;
-    }
+    } */
 
-    .liked {
-        color: blue;
+    
+    .cnt {
+        margin-top: -1.5px;
     }
-
     
 
     #repo-name {
@@ -80,6 +86,33 @@
 
     .repo-lead {
         font-size: 18px;
+    }
+
+    .fa {
+        padding: 5px 5px;
+        font-size:18px;
+        width: 30px;
+        text-align: center;
+        text-decoration: none;
+        /* margin: 5px 2px; */
+        background: #777;
+        color:white;
+        border-radius: 50%;
+    }
+
+    .fa:hover {
+        text-decoration: none;
+        background: #eee;
+    }
+
+    .liked {
+        color: blue;
+        background: #eee;
+        text-decoration: none;
+    }
+
+    .liked:hover {
+        color: red;
     }
 
 
@@ -98,7 +131,7 @@
                 }
             });
     
-            $('i.fa-thumbs-up').click(function(){    
+            $('.fa-thumbs-up').click(function(){    
                 var id = $(this).data('id');
                 var c = $('#'+this.id+'-bs3').html();
                 var cObjId = this.id;
