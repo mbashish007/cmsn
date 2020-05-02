@@ -20,7 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::resource('users', 'UserController')->middleware('auth');
 Route::resource('repos', 'RepoController')->middleware('auth');
 
 Route::post('/repos/like','RepoController@likeRepo')->middleware('auth')->name('likeRepo');

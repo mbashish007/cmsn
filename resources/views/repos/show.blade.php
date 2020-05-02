@@ -25,7 +25,8 @@
                     <h2>Files</h2>
                     <ul class="list-group">
                         @foreach ($repo->files as $file)
-                            <li class="list-group-item"> <a href="{{ asset('storage/'.$file->file) }}">{{$file->name}} </a>
+                            <li class="list-group-item">
+                                <a href="{{ asset('storage/'.$file->file) }}">{{$file->name}} </a>
                                 <form action="{{route('files.destroy',$file->id)}} " method="post" class="float-right">
                                 @csrf
                                 @method('DELETE')
@@ -70,15 +71,17 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
-
-
-                        
+                        </div>       
                     @endif
                     
                 </div>
 
-                {{-- .card-footer --}}
+                <div class="card-footer">
+                    <div>
+                        <a href="{{route('users.show',$repo->user->id)}} "><img src="{{ asset($repo->user->profile_pic()) }}" alt="Avatar" class="avatar"></a>
+                        <span class="repo-name">{{$repo->user->name}}</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -151,6 +154,23 @@
     .liked:hover {
         color: red;
     }
+
+    .avatar {
+        vertical-align: middle;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+    } 
+
+    .repo-name {
+        height: 30px;
+        font-weight: 600;
+    }
+
+    /* .card-footer {
+        background-color: #333;
+        color: whitesmoke;
+    } */
 
 
 

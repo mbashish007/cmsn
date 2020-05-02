@@ -31,7 +31,7 @@
                                 <select name="tags[]" id="tags" class="form-control tag-selector" multiple>
                                     @foreach ($tags as $tag)
                                         <option value="{{$tag->id}}"
-                                            @isset($repo)
+                                            @isset($repo)   
                                                 @if ($repo->hasTag($tag->id))
                                                     selected
                                                 @endif

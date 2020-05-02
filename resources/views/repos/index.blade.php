@@ -12,8 +12,16 @@
                     <ul class="list-group">
                         @foreach ($repos as $repo)
                             <li class="list-group-item">
+                                <div class="float-right">
+                                    <a href="{{route('users.show',$repo->user->id)}} "><img src="{{ asset($repo->user->profile_pic()) }}" alt="Avatar" class="avatar"></a>
+                                    {{-- @if ($repo->user->image)
+                                    <a href="{{route('users.show',$repo->user->id)}} "><img src="{{ asset('storage/'.$repo->user->image->image) }}" alt="Avatar" class="avatar"></a>
+                                    @else
+                                    <a href="{{route('users.show',$repo->user->id)}}"><img src="{{ asset('storage/images/blank-profile-picture-973460_640.png') }}" alt="Avatar" class="avatar"></a>
+                                    @endif --}}
+                                </div>
                                 <div id="repo-name">
-                                   
+                                    
                                     <a href={{route('repos.show',$repo->slug)}}><span class="repo-lead">{{$repo->name}}</span></a> 
                                     <div class="like-btn ml-2">
                                         {{-- <i id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}} "></i>  --}}
@@ -27,7 +35,10 @@
                                             }
                                         </script> --}}
                                     </div>
+                                    
+
                                 </div>
+                                
                                 
                                {{-- <ul class="list-group list-group-horizontal-sm " style="height: 20px" >
                                     @foreach ($repo->tags as $tag)
@@ -113,6 +124,13 @@
 
     .liked:hover {
         color: red;
+    }
+
+    .avatar {
+        vertical-align: middle;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
     }
 
 

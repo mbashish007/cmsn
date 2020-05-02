@@ -17,6 +17,14 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .avatar-nav {
+        vertical-align: middle;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+    }
+    </style>
     @yield('css')
 </head>
 <body>
@@ -51,6 +59,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img src="{{ asset(auth()->user()->profile_pic()) }}" alt="Avatar" class="avatar-nav">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
@@ -60,7 +69,9 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
+                                    <a href="{{route('users.show',auth()->user()->id)}} " class="dropdown-item">
+                                        Profile
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>

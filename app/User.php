@@ -45,4 +45,24 @@ class User extends Authenticatable
     public function files() {
         return $this->hasManyThrough(File::class,Repo::class);
     }
+
+    /**
+     * Get the user's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function profile_pic(){
+        $profile = 'storage/';
+        if($this->image){
+            $profile = $profile.$this->image->image;
+        }
+        else {
+            $profile = $profile.'images/blank-profile-picture-973460_640.png';
+        }
+
+        return $profile;
+    }
 }
