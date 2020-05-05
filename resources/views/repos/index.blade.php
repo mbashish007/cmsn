@@ -13,6 +13,7 @@
                         @foreach ($repos as $repo)
                             <li class="list-group-item">
                                 <div class="float-right">
+                                    <span class="text-success">{{$repo->user->username}} </span>
                                     <a href="{{route('users.show',$repo->user->id)}} "><img src="{{ asset($repo->user->profile_pic()) }}" alt="Avatar" class="avatar"></a>
                                     {{-- @if ($repo->user->image)
                                     <a href="{{route('users.show',$repo->user->id)}} "><img src="{{ asset('storage/'.$repo->user->image->image) }}" alt="Avatar" class="avatar"></a>
@@ -128,8 +129,8 @@
 
     .avatar {
         vertical-align: middle;
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
     }
 

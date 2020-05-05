@@ -26,7 +26,7 @@
                     <ul class="list-group">
                         @foreach ($repo->files as $file)
                             <li class="list-group-item">
-                                <a href="{{ asset('storage/'.$file->file) }}">{{$file->name}} </a>
+                                <a href="{{ asset('storage/'.$file->file) }}" target="_blank" >{{$file->name}} </a>
                                 <form action="{{route('files.destroy',$file->id)}} " method="post" class="float-right">
                                 @csrf
                                 @method('DELETE')
@@ -79,7 +79,7 @@
                 <div class="card-footer">
                     <div>
                         <a href="{{route('users.show',$repo->user->id)}} "><img src="{{ asset($repo->user->profile_pic()) }}" alt="Avatar" class="avatar"></a>
-                        <span class="repo-name">{{$repo->user->name}}</span>
+                        <span class="repo-name">{{$repo->user->username}}</span>
                     </div>
                 </div>
             </div>
@@ -157,8 +157,8 @@
 
     .avatar {
         vertical-align: middle;
-        width: 32px;
-        height: 32px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
     } 
 

@@ -48,7 +48,7 @@ class RepoController extends Controller
         //  dd(Str::of($request->name.' '.auth()->user()->name)->slug('-'));
         $repo = auth()->user()->repos()->create([
             'name' => $request->name,
-            'slug' => Str::of($request->name.' '.auth()->user()->name)->slug('-')
+            'slug' =>Str::of($request->name.' '.auth()->user()->username)->slug('-'), 
         ]);
 
         if($request->tags){
@@ -97,7 +97,7 @@ class RepoController extends Controller
 
         $repo->update([
             'name' => $request->name,
-            'slug' => Str::of($request->name.' '.auth()->user()->name)->slug('-'),
+            'slug' => Str::of($request->name.' '.$repo->user->username)->slug('-'),
         ]);
 
         if($request->tags){

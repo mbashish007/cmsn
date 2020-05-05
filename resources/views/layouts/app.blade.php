@@ -20,8 +20,8 @@
     <style>
         .avatar-nav {
         vertical-align: middle;
-        width: 38px;
-        height: 38px;
+        width: 45px;
+        height: 45px;
         border-radius: 50%;
     }
     </style>
