@@ -12,4 +12,9 @@ class Tag extends Model
     {
         return $this->morphedByMany(Repo::class, 'taggable');
     }
+
+    public function posts()
+    {
+        return $this->morphedByMany(Post::class, 'taggable');
+    }
 }

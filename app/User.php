@@ -42,6 +42,10 @@ class User extends Authenticatable
         return $this->hasMany(Repo::class);
     } 
 
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
     public function files() {
         return $this->hasManyThrough(File::class,Repo::class);
     }

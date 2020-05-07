@@ -77,7 +77,7 @@
     }
 
     
-    .like-btn {
+.like-btn {
         margin-top: 1px;
     }
 
@@ -89,7 +89,7 @@
     .cnt {
         margin-top: -1.5px;
     }
-    
+        
 
     #repo-name {
         display: flex;
