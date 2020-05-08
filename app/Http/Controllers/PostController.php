@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Tag;
+use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Http\Requests\CreateCommentRequest;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
@@ -26,7 +32,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create',['tags' => Tag::all()]);
     }
 
     /**
@@ -35,9 +41,25 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
-        //
+        
+        $post = auth()->user()->posts()->create([
+            'title' => $request->title,
+            'slug' => Str::of($request->title.' '.auth()->user()->username)->slug('-'),
+            'content'=> $request->content
+        ]);
+        
+        if($request->images){
+            $post->attachImages($request->images);
+        }
+
+        if($request->tags){
+            $post->tags()->attach($request->tags);
+        }
+
+        return redirect()->route('posts.index');
+
     }
 
     /**
@@ -48,7 +70,18 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        // $id = $post->id;
+        // $comments = Comment::whereHasMorph('commentable', '*', function (Builder $query, $type ) {
+        //     if ($type === 'App\Post') {
+        //         $query->where('commentable_id', $posti->id);
+        //     }
+        // })->get();
+        // dd($comments);
+        $comments = Comment::where('commentable_id',$post->id)
+                    ->where('commentable_type','App\Post')
+                    ->paginate(10);
+        // dd($comment);
+        return view('posts.show',['post'=>$post,'comments'=>$comments]);
     }
 
     /**
@@ -59,7 +92,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.create',['post'=>$post,'tags'=>Tag::all()]);
     }
 
     /**
@@ -69,9 +102,22 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->update([
+            'title' => $request->title,
+            'slug' => Str::of($request->title.' '.auth()->user()->username)->slug('-'),
+            'content'=> $request->content
+        ]);
+
+        if($request->images){
+            $post->updateImages($request->images);
+        }
+        if($request->tags){
+            $post->tags()->sync($request->tags);
+        }
+
+        return redirect()->route('posts.show',$post->id);
     }
 
     /**
@@ -82,7 +128,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->deletePost();
+
+        return redirect()->route('posts.index');
     }
 
     public function likePost(Request $request) {

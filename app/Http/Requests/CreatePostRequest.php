@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\UniquePostTitle;
 
-class CreateCommentRequest extends FormRequest
+class CreatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,10 @@ class CreateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'required|string',
+            'title' => ['required','string','max:255', new UniquePostTitle],
+            'content' => ['required'],
+            'tags' => ['nullable','max:10'],
+            'images' => ['nullable', 'max:10',]
         ];
     }
 }

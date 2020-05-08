@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Overtrue\LaravelLike\Traits\Likeable;
 
 class Post extends Model
@@ -42,4 +43,42 @@ class Post extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    /**
+     * create images for given Post
+     * 
+     * @param array images
+     * 
+     * @return void
+     */
+    public function attachImages(array $post_images){
+        foreach($post_images as $post_image){
+            $path = $post_image->store('images');
+            $this->images()->create([
+                'image' => $path,
+            ]);
+        }
+    }
+
+    public function updateImages(array $post_images){
+        if($this->images->count() > 0){
+            $this->deleteImages();
+            }
+    $this->attachImages($post_images);
+    }
+
+    public function deleteImages(){
+        foreach($this->images as $image){
+            Storage::delete($image->image);
+            $image->delete();
+        }
+    }
+
+    public function deletePost(){
+        if($this->images->count() > 0){
+            $this->deleteImages();
+        }
+        $this->delete();
+    }
+    
 }

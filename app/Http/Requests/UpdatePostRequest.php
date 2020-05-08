@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\UpdatePostTitle;
 
-class CreateCommentRequest extends FormRequest
+class UpdatePostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +24,13 @@ class CreateCommentRequest extends FormRequest
      */
     public function rules()
     {
+        $post = $this->route('post');
+        // dd($repo);
         return [
-            'comment' => 'required|string',
+            'title' => ['required','string','max:500', new UpdatePostTitle($post)],
+            'content' => ['required'],
+            'tags' => ['nullable','max:10'],
+            'images' => ['nullable', 'max:10',]
         ];
     }
 }
