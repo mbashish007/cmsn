@@ -1,3 +1,4 @@
 sort tags by repositry count
 Update user name 
-Add about firlf to user
+add search bar
+make profile page for user
