@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Repo;
 use App\Tag;
 use App\Comment;
 use Illuminate\Http\Request;
@@ -141,10 +142,40 @@ class PostController extends Controller
         return response()->json(['liked' => $response]);
     }
 
+    public function likeComment(Request $request) {
+        $comment = Comment::find($request->id);
+        auth()->user()->toggleLike($comment);
+        $response = auth()->user()->hasLiked($comment); 
+        // return response()->json(['or'=>$response]);
+        return response()->json(['liked' => $response]);
+    }
+
     public function createComment(CreateCommentRequest $request, Post $post){
         $post->comments()->create([
             'content' => $request->comment,
             'user_id' => auth()->user()->id,
             ]);
     }
+
+    public function deleteComment(Comment $comment){
+        $comment->delete();
+        return redirect()->back();
+    }
+
+    public function tp(){
+        // $search = request()->query('tags');
+        // dd($search);
+        $tagids = request()->tags;
+        $posts = Tag::find($tagids[0])->posts;
+        $repos = Tag::find($tagids[0])->repos;
+
+        foreach($tagids as $tagid){
+            $tag = Tag::find($tagid);
+            $posts = $posts->merge($tag->posts);
+            $repos = $repos->merge($tag->repos);
+        }
+
+        return view('filter',['posts'=>$posts,'repos' => Repo::all()]);
+    }
+
 }

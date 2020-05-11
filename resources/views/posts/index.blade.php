@@ -37,7 +37,7 @@
                     @endif
                     <div class="like-btn ml-2 pb-2 mb-2">
                         {{-- <i id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}} "></i>  --}}
-                        <a href="javascript:void(0);" id="like{{$post->id}}" data-id="{{ $post->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($post)) ? 'liked' : ''}}"></a>
+                        <a href="javascript:void(0);" id="like{{$post->id}}" data-id="{{ $post->id }} " class="like_post fa fa-thumbs-up {{(auth()->user()->hasLiked($post)) ? 'liked' : ''}}"></a>
                         <div id="" class="cnt mx-1" style="display: inline"><span id="like{{$post->id}}-bs3" class="badge badge-pill badge-info text-white">{{ $post->likers()->count() }}</span></div>
                         <a href="javascript:void(0);" data-id="{{$post->id}} " class="fa fa-comment" role="button"></a>
                         <div id="" class="cnt mx-1" style="display: inline"><span id="cnt{{$post->id}}" class="badge badge-pill badge-warning text-white">{{ $post->comments->count() }}</span></div>
@@ -163,6 +163,7 @@
 
 @section('js')
     <script src="https://kit.fontawesome.com/65d1c7cb11.js" crossorigin="anonymous"></script>
+    <script src="{{asset('js/posts/post_like.js')}}"></script>
     <script>
         $(document).ready(function() {     
             var formName;
@@ -172,30 +173,7 @@
                 }
             });
 
-            $('.fa-thumbs-up').click(function(){    
-                var id = $(this).data('id');
-                var c = $('#'+this.id+'-bs3').html();
-                var cObjId = this.id;
-                var cObj = $(this);
-
-                $.ajax({
-                type:'POST',
-                url:'/posts/like',
-                data:{id:id},
-                success:function(data,status){
-                        if(data.liked){
-                            $(cObj).addClass('liked');
-                            $('#'+cObjId+'-bs3').html(parseInt(c)+1);
-                        }
-                        else {
-                            $(cObj).removeClass('liked');
-                            $('#'+cObjId+'-bs3').html(parseInt(c)-1);
-                        }
-                    
-                    }
-                });
-            }); 
-
+            
             $('.fa-comment').click(function(){
                 // var id = $(this).data('id');
                 var id = $(this).data('id');

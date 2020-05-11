@@ -23,7 +23,11 @@
         width: 45px;
         height: 45px;
         border-radius: 50%;
+
     }
+        .navbar {
+            z-index: 3;
+        }
     </style>
     @yield('css')
 </head>

@@ -75,10 +75,23 @@ class Post extends Model
     }
 
     public function deletePost(){
-        if($this->images->count() > 0){
-            $this->deleteImages();
+        $this->deleteImages();
+        foreach($this->comments as $comment){
+            $comment->delete();
         }
         $this->delete();
     }
+
+    // public function scopeFilterTags($query){
+
+    //     $search = request()->query('tags');
+
+    //     if(!$search){
+    //         return $query;
+    //     }
+
+    //     return $query->published()->where('title','LIKE',"%{$search}%");
+        
+    // }
     
 }

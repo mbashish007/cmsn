@@ -65,7 +65,7 @@
                 <div class="pb-3">
                     <div class="like-btn ml-2 pb-2 mb-2 float-left">
                         {{-- <i id="like{{$repo->id}}" data-id="{{ $repo->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($repo)) ? 'liked' : ''}} "></i>  --}}
-                        <a href="javascript:void(0);" id="like{{$post->id}}" data-id="{{ $post->id }} " class="fa fa-thumbs-up {{(auth()->user()->hasLiked($post)) ? 'liked' : ''}}"></a>
+                        <a href="javascript:void(0);" id="like{{$post->id}}" data-id="{{ $post->id }} " class="like_post fa fa-thumbs-up {{(auth()->user()->hasLiked($post)) ? 'liked' : ''}}"></a>
                         <div id="" class="cnt mx-1" style="display: inline"><span id="like{{$post->id}}-bs3" class="badge badge-pill badge-info text-white">{{ $post->likers()->count() }}</span></div>
                         <a href="javascript:void(0);" data-id="{{$post->id}} " class="fa fa-comment" role="button"></a>
                         <div id="" class="cnt mx-1" style="display: inline"><span id="cnt{{$post->id}}" class="badge badge-pill badge-warning text-white">{{ $post->comments->count() }}</span></div>
@@ -106,7 +106,18 @@
                                 </div>
                                 <br>
                                 <br>    
-                                <div style="display:block"><p class="text-break">{{$comment->content}}</p></div>
+                                <div><p class="text-break">{{$comment->content}}</p></div>
+                                <div class="like-btn ml-2 pb-2 mb-2 float-left">
+                                    <a href="javascript:void(0);" id="comment_like{{$comment->id}}" data-id="{{ $comment->id }} " class="comment_like fa fa-thumbs-up {{(auth()->user()->hasLiked($comment)) ? 'liked' : ''}}"></a>
+                                    <div id="" class="cnt mx-1" style="display: inline"><span id="comment_like{{$comment->id}}-bs3" class="badge badge-pill badge-info text-white">{{ $comment->likers()->count() }}</span></div>
+                                </div>
+                                <div class="float-right">
+                                    <form action="{{route('deleteComment',$comment->id)}}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                         </li>
                         @endforeach
@@ -219,6 +230,8 @@
 @section('js')
     <script src="https://kit.fontawesome.com/65d1c7cb11.js" crossorigin="anonymous"></script>
     <script src="{{asset('js/PostISS.js')}}"></script>
+    <script src="{{asset('js/comments/comment_like.js')}}"></script>
+
     <script>
         $(document).ready(function() {     
             var formName;
@@ -228,7 +241,7 @@
                 }
             });
 
-            $('.fa-thumbs-up').click(function(){    
+            $('.like_post').click(function(){    
                 var id = $(this).data('id');
                 var c = $('#'+this.id+'-bs3').html();
                 var cObjId = this.id;
@@ -281,7 +294,7 @@
                         }
                         });
                 });
-            });                                       
+            });
         }); 
     </script>
     

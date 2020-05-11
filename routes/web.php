@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth');
 
 Auth::routes();
 
@@ -24,9 +24,12 @@ Route::resource('users', 'UserController')->middleware('auth');
 Route::resource('repos', 'RepoController')->middleware('auth');
 Route::resource('posts', 'PostController')->middleware('auth');
 
+Route::get('/home/tp','PostController@tp')->middleware('auth');
 Route::post('/repos/like','RepoController@likeRepo')->middleware('auth')->name('likeRepo');
 Route::post('/posts/like','PostController@likePost')->middleware('auth')->name('likePost');
+Route::post('/comments/like','PostController@likeComment')->middleware('auth')->name('likeComment');
 Route::post('/posts/{post}/comment','PostController@createComment')->middleware('auth')->name('createComment');
+Route::delete('/comments/{comment}','PostController@deleteComment')->middleware('auth')->name('deleteComment');
 Route::resource('tags','TagController')->middleware('auth');
 
 Route::get('repos/{repo}/add_file','RepoController@addFile')->middleware('auth')->name('repos.add_file');
